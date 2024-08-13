@@ -1,8 +1,11 @@
 package com.hemendra.worktrackserver.service;
 
-import com.hemendra.worktrackserver.UserActivityDto;
+import com.hemendra.worktrackserver.dto.UserActivityDto;
+import com.hemendra.worktrackserver.dto.UserWebsiteActivityDto;
 import com.hemendra.worktrackserver.entity.UserActivity;
+import com.hemendra.worktrackserver.entity.UserWebsiteActivity;
 import com.hemendra.worktrackserver.repository.UserActivityRepository;
+import com.hemendra.worktrackserver.repository.UserWebsiteActivityRepository;
 import exception.StorageException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,6 +18,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserActivityService {
     private final UserActivityRepository userActivityRepository;
+    private final UserWebsiteActivityRepository websiteActivityRepository;
     private final MinIOUtil minIOUtil;
 
     public void saveUserActivity(UserActivityDto userActivityDto) {
@@ -82,5 +86,20 @@ public class UserActivityService {
         } catch (Exception e) {
             throw new StorageException("Unable to upload image");
         }
+    }
+
+    public void saveWebsiteUsage(UserWebsiteActivityDto websiteActivityDto) {
+        UserWebsiteActivity userWebsiteActivity = new UserWebsiteActivity();
+        userWebsiteActivity.setUserName(websiteActivityDto.getUserName());
+        userWebsiteActivity.setMacAddress(websiteActivityDto.getMacAddress());
+        userWebsiteActivity.setActivityType(websiteActivityDto.getActivityType());
+        userWebsiteActivity.setStartTime(websiteActivityDto.getStartTime());
+        userWebsiteActivity.setEndTime(websiteActivityDto.getEndTime());
+        userWebsiteActivity.setDuration(websiteActivityDto.getDuration());
+        userWebsiteActivity.setSessionId(websiteActivityDto.getSessionId());
+        userWebsiteActivity.setUrl(websiteActivityDto.getUrl());
+        userWebsiteActivity.setActiveWindow(websiteActivityDto.getActiveWindow());
+
+        websiteActivityRepository.save(userWebsiteActivity);
     }
 }

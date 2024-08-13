@@ -2,7 +2,8 @@ package com.hemendra.worktrackserver.enums;
 
 public enum ActivityType {
     ACTIVE("ACTIVE"),
-    IDLE("IDLE");
+    IDLE("IDLE"),
+    BROWSING("BROWSING");
 
     private String type;
 

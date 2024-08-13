@@ -1,4 +1,4 @@
-package com.hemendra.worktrackserver;
+package com.hemendra.worktrackserver.dto;
 
 import com.hemendra.worktrackserver.enums.ActivityState;
 import com.hemendra.worktrackserver.enums.ActivityType;
