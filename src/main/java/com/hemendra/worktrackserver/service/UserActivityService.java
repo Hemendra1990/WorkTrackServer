@@ -3,8 +3,10 @@ package com.hemendra.worktrackserver.service;
 import com.hemendra.worktrackserver.UserActivityDto;
 import com.hemendra.worktrackserver.entity.UserActivity;
 import com.hemendra.worktrackserver.repository.UserActivityRepository;
+import exception.StorageException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,6 +15,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserActivityService {
     private final UserActivityRepository userActivityRepository;
+    private final MinIOUtil minIOUtil;
 
     public void saveUserActivity(UserActivityDto userActivityDto) {
 
@@ -71,5 +74,13 @@ public class UserActivityService {
         userActivityDto.setSessionId(userActivity.getSessionId());
         userActivityDto.setState(userActivity.getState());
         return userActivityDto;
+    }
+
+    public String uploadBodyImage(MultipartFile image, String userName) {
+        try {
+            return minIOUtil.prepareMinIOObject(image, "work-track/screenshot/", false, userName);
+        } catch (Exception e) {
+            throw new StorageException("Unable to upload image");
+        }
     }
 }

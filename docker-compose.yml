@@ -1,0 +1,24 @@
+name: Work Track Server
+services:
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: work-track
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./data:/var/lib/postgresql/data
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8800:8800"
+    depends_on:
+      - db
+    environment:
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+      DB_URL: jdbc:postgresql://db:5432/work-track
