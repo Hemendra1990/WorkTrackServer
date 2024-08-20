@@ -25,6 +25,8 @@ public class UserWebsiteActivity {
     LocalDateTime endTime;
     Long duration;
     UUID sessionId;
+    @Column(columnDefinition = "TEXT", nullable = true)
     String url;
+    @Column(columnDefinition = "TEXT", nullable = true)
     String activeWindow;
 }
