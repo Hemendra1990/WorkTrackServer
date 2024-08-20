@@ -2,7 +2,7 @@ package com.hemendra.worktrackserver.service;
 
 import com.google.common.base.Preconditions;
 import com.hemendra.worktrackserver.dto.StorageRequestObject;
-import exception.StorageException;
+import com.hemendra.worktrackserver.exception.StorageException;
 import io.micrometer.common.util.StringUtils;
 import io.minio.*;
 import io.minio.errors.ErrorResponseException;

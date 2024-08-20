@@ -6,7 +6,7 @@ import com.hemendra.worktrackserver.entity.UserActivity;
 import com.hemendra.worktrackserver.entity.UserWebsiteActivity;
 import com.hemendra.worktrackserver.repository.UserActivityRepository;
 import com.hemendra.worktrackserver.repository.UserWebsiteActivityRepository;
-import exception.StorageException;
+import com.hemendra.worktrackserver.exception.StorageException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;

@@ -1,4 +1,4 @@
-package exception;
+package com.hemendra.worktrackserver.exception;
 
 public class StorageException extends RuntimeException {
 
