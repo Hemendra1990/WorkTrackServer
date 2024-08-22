@@ -50,4 +50,9 @@ public class UserActivityController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("/website-usage")
+    public List<UserWebsiteActivityDto> findAllWebsiteUsage() {
+        return userActivityService.findAllWebsiteUsage();
+    }
+
 }

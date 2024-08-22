@@ -102,4 +102,21 @@ public class UserActivityService {
 
         websiteActivityRepository.save(userWebsiteActivity);
     }
+
+    public List<UserWebsiteActivityDto> findAllWebsiteUsage() {
+        return websiteActivityRepository.findAll().stream().map(userWebsiteActivity -> {
+            UserWebsiteActivityDto userWebsiteActivityDto = new UserWebsiteActivityDto();
+            userWebsiteActivityDto.setId(userWebsiteActivity.getId());
+            userWebsiteActivityDto.setUserName(userWebsiteActivity.getUserName());
+            userWebsiteActivityDto.setMacAddress(userWebsiteActivity.getMacAddress());
+            userWebsiteActivityDto.setActivityType(userWebsiteActivity.getActivityType());
+            userWebsiteActivityDto.setStartTime(userWebsiteActivity.getStartTime());
+            userWebsiteActivityDto.setEndTime(userWebsiteActivity.getEndTime());
+            userWebsiteActivityDto.setDuration(userWebsiteActivity.getDuration());
+            userWebsiteActivityDto.setSessionId(userWebsiteActivity.getSessionId());
+            userWebsiteActivityDto.setUrl(userWebsiteActivity.getUrl());
+            userWebsiteActivityDto.setActiveWindow(userWebsiteActivity.getActiveWindow());
+            return userWebsiteActivityDto;
+        }).toList();
+    }
 }

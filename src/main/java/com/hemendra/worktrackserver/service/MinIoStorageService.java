@@ -27,14 +27,15 @@ public class MinIoStorageService {
     public boolean checkFileExists(StorageRequestObject storageRequestObject) throws ServiceException {
         try {
             String bucketName = storageRequestObject.getBucketName();
-            if (!checkBucketExists(bucketName)) {
+            String s3BucketName = convertToS3BucketName(bucketName);
+            if (!checkBucketExists(s3BucketName)) {
                 return false;
             }
             String folderName = storageRequestObject.getFolderName();
             String fileName = storageRequestObject.getCustomFileName();
             String objectName = folderName + fileName;
             StatObjectArgs statObjectArgs = StatObjectArgs.builder()
-                    .bucket(bucketName)
+                    .bucket(s3BucketName)
                     .object(objectName)
                     .build();
             StatObjectResponse statObjectResponse = minioClient.statObject(statObjectArgs);
@@ -53,12 +54,13 @@ public class MinIoStorageService {
     public boolean delete(StorageRequestObject storageRequestObject) throws ServiceException {
         try {
             String bucketName = storageRequestObject.getBucketName();
-            Preconditions.checkArgument(checkBucketExists(bucketName), "Bucket Does Not Exists");
+            String s3BucketName = convertToS3BucketName(bucketName);
+            Preconditions.checkArgument(checkBucketExists(s3BucketName), "Bucket Does Not Exists");
             String folderName = storageRequestObject.getFolderName();
             String fileName = storageRequestObject.getCustomFileName();
             String objectName = folderName + fileName;
             RemoveObjectArgs removeObjectArgs = RemoveObjectArgs.builder()
-                    .bucket(bucketName)
+                    .bucket(s3BucketName)
                     .object(objectName)
                     .build();
             minioClient.removeObject(removeObjectArgs);
@@ -72,8 +74,9 @@ public class MinIoStorageService {
     public void uploadFile(StorageRequestObject storageRequestObject, MultipartFile dataFile, boolean deletePreviousFile) throws ServiceException {
         try {
             String bucketName = storageRequestObject.getBucketName().replaceAll("[^a-zA-Z0-9]", "");
-            if (!checkBucketExists(bucketName)) {
-                createBucket(bucketName);
+            String s3BucketName = convertToS3BucketName(bucketName);
+            if (!checkBucketExists(s3BucketName)) {
+                createBucket(s3BucketName);
             } else {
                 if (deletePreviousFile) {
                     deleteAllFilesInBucket(storageRequestObject);
@@ -82,7 +85,7 @@ public class MinIoStorageService {
             String folderName = storageRequestObject.getFolderName();
             String fileName = storageRequestObject.getCustomFileName();
             String objectName = folderName + fileName;
-            this.minioClient.putObject(PutObjectArgs.builder().bucket(bucketName).object(objectName)
+            this.minioClient.putObject(PutObjectArgs.builder().bucket(s3BucketName).object(objectName)
                     .stream(dataFile.getInputStream(), dataFile.getSize(), -1).build());
         } catch (Exception ex) {
             log.error(ex.getMessage());
@@ -91,8 +94,9 @@ public class MinIoStorageService {
     }
 
     public boolean checkBucketExists(String bucketName) {
+        String s3BucketName = convertToS3BucketName(bucketName);
         try {
-            BucketExistsArgs bucketExistsArgs = BucketExistsArgs.builder().bucket(bucketName).build();
+            BucketExistsArgs bucketExistsArgs = BucketExistsArgs.builder().bucket(s3BucketName).build();
             return minioClient.bucketExists(bucketExistsArgs);
         } catch (Exception ex) {
             log.error(ex.getMessage(), ex);
@@ -101,9 +105,10 @@ public class MinIoStorageService {
     }
 
     public Resource download(String bucketName, String objectPath) throws ServiceException {
+        String s3BucketName = convertToS3BucketName(bucketName);
         try {
             InputStream inputStream = this.minioClient.getObject(GetObjectArgs.builder()
-                    .bucket(bucketName)
+                    .bucket(s3BucketName)
                     .object(objectPath)
                     .build());
             return new InputStreamResource(inputStream);
@@ -132,9 +137,10 @@ public class MinIoStorageService {
     }
 
     public void createBucket(String bucketName) throws ServiceException {
+        String s3BucketName = convertToS3BucketName(bucketName);
         try {
             minioClient.makeBucket(MakeBucketArgs.builder()
-                    .bucket(bucketName)
+                    .bucket(s3BucketName)
                     .build());
         } catch (Exception ex) {
             log.error(ex.getMessage());
@@ -171,5 +177,40 @@ public class MinIoStorageService {
         } catch (Exception ex) {
             throw new StorageException("MinioStorageService.deleteExistsFilesInBucket");
         }
+    }
+
+    public String convertToS3BucketName(String input) {
+        // Convert to lowercase
+        String bucketName = input.toLowerCase();
+
+        // Replace invalid characters with hyphens
+        bucketName = bucketName.replaceAll("[^a-z0-9.-]", "-");
+
+        // Ensure it starts with a letter or number
+        if (!Character.isLetterOrDigit(bucketName.charAt(0))) {
+            bucketName = "a" + bucketName;
+        }
+
+        // Ensure it ends with a letter or number
+        if (!Character.isLetterOrDigit(bucketName.charAt(bucketName.length() - 1))) {
+            bucketName = bucketName + "z";
+        }
+
+        // Replace consecutive periods with a single period
+        while (bucketName.contains("..")) {
+            bucketName = bucketName.replace("..", ".");
+        }
+
+        // Truncate to a maximum of 63 characters
+        if (bucketName.length() > 63) {
+            bucketName = bucketName.substring(0, 63);
+        }
+
+        // Ensure the bucket name is at least 3 characters long
+        if (bucketName.length() < 3) {
+            bucketName = bucketName + "xyz".substring(0, 3 - bucketName.length());
+        }
+
+        return bucketName;
     }
 }
