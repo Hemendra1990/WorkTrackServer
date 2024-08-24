@@ -10,6 +10,9 @@ import java.util.UUID;
 
 @Data
 public class UserActivityDto implements Serializable {
+
+    private static final long serialVersionUID = 2024082402250L;
+
     Long id;
     String userName;
     String macAddress;

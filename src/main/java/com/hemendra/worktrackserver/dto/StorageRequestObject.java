@@ -4,9 +4,14 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class StorageRequestObject {
+public class StorageRequestObject implements Serializable {
+
+    private static final long serialVersionUID = 24082024022411L;
+
     @JsonProperty("bucketName")
     private String bucketName;
     @JsonProperty("folderName")

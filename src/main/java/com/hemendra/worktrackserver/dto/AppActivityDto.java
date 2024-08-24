@@ -1,25 +1,21 @@
 package com.hemendra.worktrackserver.dto;
 
-import com.hemendra.worktrackserver.enums.ActivityType;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Data
-public class UserWebsiteActivityDto implements Serializable {
+public class AppActivityDto implements Serializable {
 
-    private static final long serialVersionUID = 12221121121L;
-
+    private static final long serialVersionUID = 202408240225210L;
     Long id;
     String userName;
     String macAddress;
-    ActivityType activityType;
     LocalDateTime startTime;
     LocalDateTime endTime;
     Long duration;
-    UUID sessionId;
-    String url;
     String activeWindow;
+    String appCategory;
+    String appName;
 }

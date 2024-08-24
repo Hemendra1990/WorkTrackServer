@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.hemendra</groupId>
-    <artifactId>WorkTrackServer</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <name>WorkTrackServer</name>
-    <description>WorkTrackServer</description>
+    <artifactId>wtServer</artifactId>
+    <version>1.0.0</version>
+    <name>wtServer</name>
+    <description>Activity Tracker</description>
     <url/>
     <licenses>
         <license/>
