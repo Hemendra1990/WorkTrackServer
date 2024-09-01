@@ -8,6 +8,7 @@ import com.hemendra.worktrackserver.repository.UserActivityRepository;
 import com.hemendra.worktrackserver.repository.UserWebsiteActivityRepository;
 import com.hemendra.worktrackserver.exception.StorageException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,13 +17,14 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserActivityService {
     private final UserActivityRepository userActivityRepository;
     private final UserWebsiteActivityRepository websiteActivityRepository;
     private final MinIOUtil minIOUtil;
 
     public void saveUserActivity(UserActivityDto userActivityDto) {
-
+        log.info("{}", userActivityDto);
         Optional<UserActivity> bySessionId = userActivityRepository.findBySessionId(userActivityDto.getSessionId());
         if (bySessionId.isPresent()) {
             //update
@@ -31,6 +33,7 @@ public class UserActivityService {
             //calcualte duration
             long idleDuration = java.time.Duration.between(userActivity.getStartTime(), userActivityDto.getEndTime()).getSeconds();
             userActivity.setDuration(idleDuration);
+            userActivity.setState(userActivityDto.getState());
             userActivityRepository.save(userActivity);
         } else {
             UserActivity userActivity = new UserActivity();

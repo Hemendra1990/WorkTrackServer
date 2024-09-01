@@ -30,7 +30,7 @@ public class MinIOUtil {
                 storageRequestObject.setBucketName(bucketName);
                 storageRequestObject.setFolderName(getFormattedFolderName(filePath, objectId));
                 storageRequestObject.setCustomFileName(file.getOriginalFilename());
-
+                
                 minioStorageService.uploadFile(storageRequestObject, file, deletePrevFile);
 //                return generatePreSignedUrl(storageRequestObject);
                 return getFormattedFolderName(filePath, objectId) + file.getOriginalFilename();

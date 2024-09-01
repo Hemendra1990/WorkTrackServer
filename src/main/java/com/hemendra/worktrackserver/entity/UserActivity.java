@@ -18,8 +18,11 @@ public class UserActivity {
     //userName, macAddress, activityType, startTime, endTime, duration
     String userName;
     String macAddress;
+
+    @Column(columnDefinition = "TEXT", nullable = true)
     @Enumerated(EnumType.STRING)
     ActivityType activityType;
+
     LocalDateTime startTime;
     LocalDateTime endTime;
     Long duration;

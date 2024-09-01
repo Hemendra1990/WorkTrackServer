@@ -2,14 +2,11 @@ package com.hemendra.worktrackserver.repository;
 
 import com.hemendra.worktrackserver.dto.UserActivityDto;
 import com.hemendra.worktrackserver.entity.UserActivity;
-import com.hemendra.worktrackserver.enums.ActivityState;
-import com.hemendra.worktrackserver.enums.ActivityType;
 import jakarta.persistence.Tuple;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
