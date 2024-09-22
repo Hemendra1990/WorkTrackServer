@@ -34,6 +34,8 @@ public class UserActivityService {
             long idleDuration = java.time.Duration.between(userActivity.getStartTime(), userActivityDto.getEndTime()).getSeconds();
             userActivity.setDuration(idleDuration);
             userActivity.setState(userActivityDto.getState());
+            userActivity.setReason(userActivityDto.getReason());
+            userActivity.setActivity(userActivityDto.getActivity());
             userActivityRepository.save(userActivity);
         } else {
             UserActivity userActivity = new UserActivity();
@@ -44,6 +46,9 @@ public class UserActivityService {
             userActivity.setEndTime(userActivityDto.getEndTime());
             userActivity.setDuration(userActivityDto.getDuration());
             userActivity.setSessionId(userActivityDto.getSessionId());
+
+            userActivity.setReason(userActivityDto.getReason());
+            userActivity.setActivity(userActivityDto.getActivity());
             userActivityRepository.save(userActivity);
         }
 
@@ -61,6 +66,9 @@ public class UserActivityService {
             userActivityDto.setDuration(userActivity.getDuration());
             userActivityDto.setSessionId(userActivity.getSessionId());
             userActivityDto.setState(userActivity.getState());
+
+            userActivityDto.setReason(userActivity.getReason());
+            userActivityDto.setActivity(userActivity.getActivity());
             return userActivityDto;
         }).toList();
     }
@@ -80,6 +88,8 @@ public class UserActivityService {
         userActivityDto.setDuration(userActivity.getDuration());
         userActivityDto.setSessionId(userActivity.getSessionId());
         userActivityDto.setState(userActivity.getState());
+        userActivityDto.setReason(userActivity.getReason());
+        userActivityDto.setActivity(userActivity.getActivity());
         return userActivityDto;
     }
 

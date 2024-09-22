@@ -29,4 +29,7 @@ public class UserActivity {
     UUID sessionId;
     @Enumerated(EnumType.STRING)
     ActivityState state;
+
+    String reason;
+    String activity;
 }

@@ -22,6 +22,8 @@ public class UserActivityDto implements Serializable {
     Long duration;
     UUID sessionId;
     ActivityState state;
+    String reason;
+    String activity;
 
     public UserActivityDto() {
     }
