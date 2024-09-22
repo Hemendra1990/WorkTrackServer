@@ -3,7 +3,10 @@ package com.hemendra.worktrackserver.enums;
 public enum ActivityType {
     ACTIVE("ACTIVE"),
     IDLE("IDLE"),
-    BROWSING("BROWSING");
+    BROWSING("BROWSING"),
+    SHUTDOWN("SHUTDOWN"),
+    LOCK("LOCK"),
+    SLEEP("SLEEP");;
 
     private String type;
 
